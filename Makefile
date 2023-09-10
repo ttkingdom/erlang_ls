@@ -1,11 +1,12 @@
 .PHONY: all
 
 PREFIX ?= '/usr/local'
+REBAR ?= './rebar3'
 
 all:
 	@ echo "Building escript..."
-	@ rebar3 escriptize
-	@ rebar3 as dap escriptize
+	@ ${REBAR} escriptize
+	@ ${REBAR} as dap escriptize
 
 .PHONY: install
 install: all
@@ -22,7 +23,7 @@ $HOME/.dialyzer_plt:
 	dialyzer --build_plt --apps erts kernel stdlib
 
 ci: $HOME/.dialyzer_plt
-	rebar3 do compile, ct, proper --cover --constraint_tries 100, dialyzer, xref, cover, edoc
+	${REBAR} do compile, ct, proper --cover --constraint_tries 100, dialyzer, xref, cover, edoc
 
 coveralls:
-	rebar3 coveralls send
+	${REBAR} coveralls send
